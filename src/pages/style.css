@@ -1,0 +1,13 @@
+.bg {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.637), rgba(0, 0, 0, 0.637)), url("/public/wallpaper.jpg");
+    background-size: cover;
+}
+
+.bg2 {
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(rgba(0, 0, 0, 0.637), rgba(0, 0, 0, 0.637)), url("/public/wallpaper.jpg");
+    background-size: cover;
+}
