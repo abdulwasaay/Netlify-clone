@@ -1,5 +1,17 @@
 {
   "user": [
+    {
+      "check": true,
+      "formdata": {
+        "0": {
+          "email": "",
+          "password": ""
+        },
+        "email": "wasaysaleem071@gmail.com",
+        "password": "Crazyay510,"
+      },
+      "id": 1
+    }
   ],
   "movies": []
 }

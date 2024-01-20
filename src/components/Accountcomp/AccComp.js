@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
+import { deleteData, getAllMovies } from "../../services/moviemethods";
 
 
 export default function AccountComponent() {
@@ -24,31 +25,39 @@ export default function AccountComponent() {
     }
 
     useEffect(() => {
-        const res = fetch("http://localhost:3031/movies")
-        res.then((response) => {
-            return response.json()
-        }).then((resp) => {
-            const arr = resp.filter((r) => {
-                if (r.userMovie === data.email) {
+        // const res = fetch("http://localhost:3031/movies")
+        // res.then((response) => {
+        //     return response.json()
+        // }).then((resp) => {
+        //     const arr = resp.filter((r) => {
+        //         if (r.userMovie === data.email) {
+        //             return r
+        //         }
+        //     })
+        //     setSelectedmovs(arr)
+        // }).catch((err) => {
+        //     console.log(err)
+        // })
+        async function Pro() {
+            const found = await getAllMovies();
+            const arr = found.filter((r) => {
+                if (r.usermovie === data.email) {
                     return r
                 }
             })
             setSelectedmovs(arr)
-        }).catch((err) => {
-            console.log(err)
-        })
+        }
+        Pro();
     }, [deletes]);
 
     const maps = selectedmovs.map((movs) => {
         return (
             <div className="w-[400px] inline-block mr-[10px] ml-[10px] relative overflow-hidden">
-                <img src={`https://image.tmdb.org/t/p/w500${movs.URL}`} className=" w-[400px] h-[214px]" />
+                <img src={`https://image.tmdb.org/t/p/w500${movs.url}`} className=" w-[400px] h-[214px]" />
                 <div className=" absolute top-[0] bg-black w-[400px] h-[214px] opacity-0 hover:opacity-80 hover:cursor-pointer" >
                     <button className="mt-[10px] ml-[10px]" onClick={async () => {
                         try {
-                            const response = await fetch(`http://localhost:3031/movies/${movs.id}`, {
-                                method: "DELETE",
-                            })
+                            deleteData(movs.id)
                             setDelete(!deletes)
                         } catch (err) {
                             console.log(err)

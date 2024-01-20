@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useNavigate } from "react-router-dom";
+import { deleteData, getById, writeData } from "../../services/moviemethods";
 
 export default function Movie({ mov, ids, unique }) {
     const [like, setLike] = useState(false)
@@ -11,70 +12,41 @@ export default function Movie({ mov, ids, unique }) {
     const navigate = useNavigate();
     let id;
     if (token) {
-        id = data.email + unique + ids;
+        id = "netflixdatabase"+ unique + ids;
     }
 
     useEffect(() => {
-        const res = fetch("http://localhost:3031/movies");
-        res.then((response) => {
-            return response.json();
-        }).then((data) => {
-            const found = data.find((m) => m.id === id);
-            console.log(found)
+        async function Pro() {
+            const found = await getById(id);
             if (found) {
                 setLike(true)
             } else {
                 setLike(false)
             }
-        }).catch((err) => {
-            console.log(err)
-        })
+        }
+        Pro();
     }, [add])
-    const likeHandler = async () => {
-        setLike(true)
+    const likeHandler = () => {
         if (!token) {
             alert("You have to Login first!");
             navigate("/signin")
         } else {
             try {
-                const response = await fetch("http://localhost:3031/movies", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        title: mov.title,
-                        URL: mov.backdrop_path,
-                        userMovie: data.email,
-                        id,
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                })
-                if (response.ok) {
-
-                    setAdd(!add)
-                } else {
-
-                    setAdd(!add)
-                }
-
+                writeData(mov.title, mov.backdrop_path, data.email, id)
+                setAdd(!add)
             } catch (err) {
                 console.log(err)
             }
         }
     }
-    const unlikeHandler = async () => {
+    const unlikeHandler = () => {
         if (!token) {
             alert("You have to Login first!");
             navigate("/signin")
         } else {
             try {
-                const response = await fetch(`http://localhost:3031/movies/${id}`, {
-                    method: "DELETE",
-                })
-                if (response.ok) {
-                    setAdd(!add)
-                }
-
+                deleteData(id)
+                setAdd(!add)
             } catch (err) {
                 console.log(err)
             }

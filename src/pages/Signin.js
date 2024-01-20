@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Register from "../components/signupForm/Register"
 import { useNavigate } from "react-router-dom";
+import { getByEmail, getByPassword } from "../services/formmethods";
 
 export default function SignIn() {
     const [signup] = useState(false);
@@ -15,18 +16,18 @@ export default function SignIn() {
     }, [])
     const submitHandler = async (check, formdata) => {
         try {
-            const response = await fetch(`http://localhost:3031/user`);
-            const users = await response.json();
-            const found = users.find((u) => u.formdata.email.toLowerCase() === formdata.email.toLowerCase())
-            if (!found) {
-                setUserNotexistErr("User not found!")
-            } else if (found.formdata.password !== formdata.password) {
-                setPasswordmisMatch("Incorrect Password!");
-            }
+            const user = await getByEmail(formdata.email);
+                if(!user){
+                    setUserNotexistErr("User doesnot found !");
+                }
+                const userPassword = await getByPassword(formdata.password,user.password)
+                if(!userPassword){
+                    setPasswordmisMatch("Incorect password !");
+                }
             else {
-                const token = "###" + Math.random(1) * 1000 + "?" + found.id;
+                const token = "###" + Math.random(1) * 1000 + "?" + user.id;
                 localStorage.setItem("session", JSON.stringify({
-                    token, email: found.formdata.email,
+                    token, email: user.email,
                 }))
                 setUserNotexistErr("");
                 setPasswordmisMatch("");
