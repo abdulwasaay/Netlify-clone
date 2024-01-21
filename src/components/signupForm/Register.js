@@ -85,7 +85,7 @@ export default function Register({ register, onsubmit, existError, notExistError
                     register ? (
                         <p className=" opacity-[1] text-[11px] ml-[40px] mr-[40px] mt-[25px] text-gray-600 max-[291px]:text-[10px]">Already subscribed to Netflix?<Link to="/signin" className=" text-white">Sign In</Link></p>
                     ) : (
-                        <p className=" opacity-[1] text-[11px] ml-[40px] mr-[40px] mt-[25px] text-gray-600 max-[297px]:text-[10px]">Already subscribed to Netflix?<Link to="/signup" className=" text-white">Sign Up</Link></p>
+                        <p className=" opacity-[1] text-[11px] ml-[40px] mr-[40px] mt-[25px] text-gray-600 max-[297px]:text-[10px]">Don't have an account?<Link to="/signup" className=" text-white">Sign Up</Link></p>
                     )
                 }
             </form>
